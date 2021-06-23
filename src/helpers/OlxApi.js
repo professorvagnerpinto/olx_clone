@@ -57,14 +57,26 @@ const apiFetchGet = async (endPoint, body = []) => {
 }
 
 const OlxApi = {
-  login: async(email, password) => {
+  login: async (email, password) => {
     console.log('chamou login');
     const json = await apiFetchPost(
       '/user/signin',
       {email, password}
     );
     return json;
-
+  },
+  register: async (name, uf, email, password) => {
+    const json = await apiFetchPost(
+      '/user/signup',
+      {name, state:uf, email, password}
+    );
+    return json;
+  },
+  getStates: async () => {
+    const json = await apiFetchGet(
+      '/states'
+    );
+    return json.states;
   }
 }
 export default () => OlxApi;
