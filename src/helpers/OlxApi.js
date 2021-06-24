@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 /*
   Endereço do Web Service do B7Web:
-  1. http://alunos.b7web.com.br:501/
+  1. http://alunos.b7web.com.br:501
   2. http://alunos.b7web.com.br:501/ping (para ver se está online)
 */
 
@@ -77,6 +77,12 @@ const OlxApi = {
       '/states'
     );
     return json.states;
+  },
+  getCategories: async () => {
+    const json = await apiFetchGet(
+      '/categories'
+    );
+    return json.categories;
   }
 }
 export default () => OlxApi;
