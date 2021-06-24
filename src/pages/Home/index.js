@@ -3,25 +3,39 @@ import {SearchArea, PageArea} from './styles';
 import { PageContainer } from '../../components/MainComponentes';
 import useApi from '../../helpers/OlxApi';
 import {Link} from 'react-router-dom';
+import AdItem from '../../components/partials/AdItem';
 
 const Home = () => {
   const api = useApi();
   const[stateList, setStateList] = useState([]);
   const[categories, setCategories] = useState([]);
+  const [adsList, setAdsList] = useState([]);
 
   useEffect(() => {
+    //requisita os estados
     const getStates = async () => {
       const sList = await api.getStates();
       setStateList(sList);
     }
     getStates();
 
+    //requisita as categorias
     const getCategories = async () => {
       const cList = await api.getCategories();
-      console.log(cList);
       setCategories(cList);
     }
     getCategories();
+
+    //requisita os ads (recentes)
+    const getRecentAds = async () => {
+      const aList = await api.getRecentAds({
+        sort: 'desc',
+        limit: 8,
+      });
+      console.log(aList);
+      setAdsList(aList);
+    }
+    getRecentAds();
   }, []);
 
   return(
@@ -51,7 +65,15 @@ const Home = () => {
       </SearchArea>
       <PageContainer>
         <PageArea>
-          PageArea
+          <h2>Anúncios Recentes</h2>
+          <div className="list">
+            {adsList.map((i, k) => 
+              <AdItem key={k} data={i} />
+            )}
+          </div>
+          <Link to="/ads" className="seeAllLink">Ver Todos</Link>
+            <hr/>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
         </PageArea>
       </PageContainer>
     </>
