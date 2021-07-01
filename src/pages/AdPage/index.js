@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import {Slide} from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
-import {PageArea, Fake} from './styles';
+import {PageArea, Fake, OthersArea, BreadCrumb} from './styles';
 import { PageContainer } from '../../components/MainComponentes';
+import AddItem from '../../components/partials/AdItem';
 import useApi from '../../helpers/OlxApi';
 
 const AdPage = () => {
@@ -35,6 +36,15 @@ const AdPage = () => {
   
   return(
     <PageContainer>
+      {adInfo.category &&
+        <BreadCrumb>
+        Você está aqui:
+        <Link to="/">Home</Link>/
+        <Link to={`/ads?state=${adInfo.stateName}`}>{adInfo.stateName}</Link>/
+        <Link to={`/ads?state=${adInfo.stateName}&cat=${adInfo.category.slug}`}>{adInfo.category.name}</Link>/
+        {adInfo.title}
+      </BreadCrumb>
+      }
       <PageArea>
         <div className="leftSide">
           <div className="box">
@@ -74,12 +84,40 @@ const AdPage = () => {
         <div className="rightSide">
           <div className="box box--padding">
             {loading && <Fake height="20"/>}
+            {adInfo.priceNegotiable && 
+              'Preço Negociável'
+            }
+            {!adInfo.priceNegotiable && adInfo.price &&
+              <div className="price">
+                Preço: <span>R${adInfo.price}</span> 
+              </div>
+            }
           </div>
-          <div className="box box--padding">
           {loading && <Fake height="50"/>}
-          </div>
+          {adInfo.userInfo && 
+            <>
+              <a href={`maito:${adInfo.userInfo.email}`} rel="noreferrer" target="_blank" className="contactSellerLink">Fale com o vendedor</a>
+              <div className="createdBy box box--padding"> 
+                <strong>{adInfo.userInfo.name}</strong>
+                <small>Email: {adInfo.userInfo.email}</small>
+                <small>Estado:{adInfo.stateName}</small>
+              </div>
+            </>
+          }
         </div>
       </PageArea>
+      <OthersArea>
+      {adInfo.others &&
+          <>
+            <h2>Outros anúncios desse vendedor</h2>
+            <div className="list">
+              {adInfo.others.map((i,k)=>
+                <AddItem key={k} data={i} />
+              )}
+            </div>
+          </>
+      }
+      </OthersArea>
     </PageContainer>
   );
 }

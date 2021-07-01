@@ -56,6 +56,28 @@ const apiFetchGet = async (endPoint, body = []) => {
   return json;
 }
 
+const apiFetchFile = async (endPoint, body = []) => {
+  if(!body.token){
+    let token = Cookies.get('token');
+    if(token){
+      body.append('token', token);
+    }
+  }
+
+  const res = await fetch(BASEAPI+endPoint, {
+    method: 'POST',
+    body,
+  });
+  const json = await res.json();
+
+  if(json.notallowed){
+    window.location.href = '/signin';
+    return;
+  }
+
+  return json;
+}
+
 const OlxApi = {
   login: async (email, password) => {
     console.log('chamou login');
@@ -95,6 +117,14 @@ const OlxApi = {
     const json = await apiFetchGet(
       '/ad/item',
       {id, other}
+    );
+    return json;
+  },
+  addAd: async (fData) => {
+    console.log(fData);
+    const json = await apiFetchFile(
+      '/ad/add',
+      fData,
     );
     return json;
   }

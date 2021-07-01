@@ -26,7 +26,7 @@ function Header() {
             {logged && 
               <>
                 <li>
-                  <Link to="/post-an-add" className="button">Anuncie seu Produto</Link>
+                  <Link to="/post-an-ad" className="button">Anuncie seu Produto</Link>
                 </li>
                 <li>
                   <Link to="/my-account">Minha Conta</Link>

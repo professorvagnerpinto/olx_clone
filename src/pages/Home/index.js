@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import {SearchArea, PageArea} from './styles';
 import { PageContainer } from '../../components/MainComponentes';
