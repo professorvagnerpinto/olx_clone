@@ -91,6 +91,7 @@ export const OthersArea = styled.div`
   }
   .list{
     display: flex;
+    flex-wrap: wrap;
     .addItem{
       width: 25%;
     }

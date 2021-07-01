@@ -1,4 +1,3 @@
-import { auto } from 'async';
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import {isLogged} from '../helpers/AuthHandler';
